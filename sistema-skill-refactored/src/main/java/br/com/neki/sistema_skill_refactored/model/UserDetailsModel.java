@@ -11,7 +11,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class UserDetailsModel {
-	private UUID userId;
+	private UUID id;
 	
     @NotBlank(message = "The username is required")
 	private String username;

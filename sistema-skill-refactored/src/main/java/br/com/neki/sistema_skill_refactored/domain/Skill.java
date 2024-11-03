@@ -3,7 +3,7 @@ package br.com.neki.sistema_skill_refactored.domain;
 import java.util.UUID;
 
 import br.com.neki.sistema_skill_refactored.model.SkillCreateAndAssignModel;
-import br.com.neki.sistema_skill_refactored.model.SkillCreateModel;
+import br.com.neki.sistema_skill_refactored.model.input.SkillCreateInput;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -36,10 +36,10 @@ public class Skill {
 	@Column(name = "skill_tx_image")
     private String image;
 	
-	public Skill(SkillCreateModel skillCreateModel) {
-		this.skillName = skillCreateModel.getSkillName();
-		this.description = skillCreateModel.getDescription();
-		this.image = skillCreateModel.getImage();
+	public Skill(SkillCreateInput skillCreateInput) {
+		this.skillName = skillCreateInput.getSkillName();
+		this.description = skillCreateInput.getDescription();
+		this.image = skillCreateInput.getImage();
 	}
 	
 	public Skill(SkillCreateAndAssignModel skillCreateAndAssignModel) {

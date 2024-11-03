@@ -1,16 +1,16 @@
-package br.com.neki.sistema_skill_refactored.model;
+package br.com.neki.sistema_skill_refactored.model.input;
 
 import org.hibernate.validator.constraints.Length;
 
+import br.com.neki.sistema_skill_refactored.core.validation.annotation.ValidImageUrl;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class SkillCreateModel {
-
+public class SkillCreateInput {
+	
 	@NotBlank(message = "The name field is required")
 	private String skillName;
 
@@ -18,8 +18,7 @@ public class SkillCreateModel {
 	@Length(max = 300, message = "The description must be at most 200 characters")
 	private String description;
 	
-	@Pattern(regexp = "^(https?|ftp)://[^\s/$.?#].[^\s]*$",message = "invalid url")
-    @NotBlank(message = "The image field is required")
+	@ValidImageUrl
 	private String image;
 
 }

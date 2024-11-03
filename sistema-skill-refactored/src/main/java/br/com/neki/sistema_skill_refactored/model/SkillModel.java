@@ -2,9 +2,9 @@ package br.com.neki.sistema_skill_refactored.model;
 
 import java.util.UUID;
 
+import br.com.neki.sistema_skill_refactored.core.validation.annotation.ValidImageUrl;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,8 +21,7 @@ public class SkillModel {
 	@NotBlank(message = "The description field is required")
 	private String description;
 
-	@Pattern(regexp = "^(https?|ftp)://[^\s/$.?#].[^\s]*$", message = "invalid url")
-	@NotBlank(message = "The image field is required")
+	@ValidImageUrl
 	private String image;
 
 }
