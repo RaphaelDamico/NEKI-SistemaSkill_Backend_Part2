@@ -2,9 +2,10 @@ package br.com.neki.sistema_skill_refactored.services;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.com.neki.sistema_skill_refactored.domain.Skill;
@@ -21,11 +22,12 @@ import br.com.neki.sistema_skill_refactored.model.SkillAssignExistingModel;
 import br.com.neki.sistema_skill_refactored.model.SkillCreateAndAssignModel;
 import br.com.neki.sistema_skill_refactored.model.SkillModel;
 import br.com.neki.sistema_skill_refactored.model.UserSkillModel;
-import br.com.neki.sistema_skill_refactored.model.UserSkillUpdateLevelModel;
 import br.com.neki.sistema_skill_refactored.model.input.SkillCreateInput;
+import br.com.neki.sistema_skill_refactored.model.input.UserSkillUpdateLevelInput;
 import br.com.neki.sistema_skill_refactored.repositories.SkillRepository;
 import br.com.neki.sistema_skill_refactored.repositories.UserRepository;
 import br.com.neki.sistema_skill_refactored.repositories.UserSkillRepository;
+import jakarta.transaction.Transactional;
 
 @Service
 public class SkillService {
@@ -39,14 +41,16 @@ public class SkillService {
 	@Autowired
 	UserSkillRepository userSkillRepository;
 
-	public List<SkillModel> findAll(String skillNameFilter) {
-		List<Skill> skills;
-		if (skillNameFilter == null || skillNameFilter.isEmpty()) {
-			skills = skillRepository.findAll();
-		} else {
-			skills = skillRepository.findByNameContaining(skillNameFilter);
-		}
-		return skills.stream().map(SkillMapper.INSTANCE::toSkillModel).collect(Collectors.toList());
+	public Page<SkillModel> findAll(String skillNameFilter, Pageable pageable) {
+	    Page<Skill> skills;
+	    if (skillNameFilter == null || skillNameFilter.isEmpty()) {
+	        skills = skillRepository.findAll(pageable);
+	        if (skills.isEmpty())
+				throw new SkillNotFoundException("No skill found!");
+	    } else {
+	        skills = skillRepository.findByNameContaining(skillNameFilter, pageable);
+	    }
+	    return skills.map(SkillMapper.INSTANCE::toSkillModel);
 	}
 
 	public void save(SkillCreateInput skillCreateInput) {
@@ -76,7 +80,8 @@ public class SkillService {
 		userRepository.save(user);
 		return SkillMapper.INSTANCE.toSkillCreateInput(skillSave);
 	}
-
+	
+	@Transactional
 	public List<UserSkill> addExistingSkillToUser(List<SkillAssignExistingModel> listSkillAssignExistingModel) {
 		User user = userRepository.findById(listSkillAssignExistingModel.get(0).getUserId())
 				.orElseThrow(() -> new UserNotFoundException(listSkillAssignExistingModel.get(0).getUserId()));
@@ -99,7 +104,7 @@ public class SkillService {
 		return user.getUserSkills();
 	}
 
-	public UserSkillModel updateUserSkillLevel(UserSkillUpdateLevelModel userSkillUpdateLevelModel) {
+	public UserSkillModel updateUserSkillLevel(UserSkillUpdateLevelInput userSkillUpdateLevelModel) {
 		UserSkill userSkill = userSkillRepository.findById(userSkillUpdateLevelModel.getUserSkillId())
 				.orElseThrow(() -> new UserSkillNotFoundException(userSkillUpdateLevelModel.getUserSkillId()));
 		userSkill.setLevel(userSkillUpdateLevelModel.getLevel());

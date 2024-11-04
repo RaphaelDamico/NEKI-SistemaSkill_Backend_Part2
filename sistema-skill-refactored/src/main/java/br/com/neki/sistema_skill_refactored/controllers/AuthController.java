@@ -12,9 +12,11 @@ import br.com.neki.sistema_skill_refactored.records.JwtTokenRecord;
 import br.com.neki.sistema_skill_refactored.records.LoginCredentialsRecord;
 import br.com.neki.sistema_skill_refactored.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @RequestMapping("/auth")
+@Tag(name = "Authenticator", description = "Autentica o usuário para acessar a aplicação")
 public class AuthController {
 
     @Autowired

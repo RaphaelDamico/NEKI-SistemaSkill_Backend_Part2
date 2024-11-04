@@ -18,23 +18,17 @@ import br.com.neki.sistema_skill_refactored.model.UserDetailsModel;
 import br.com.neki.sistema_skill_refactored.model.input.UserCreateInput;
 import br.com.neki.sistema_skill_refactored.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
-@Tag(name = "Users")
 @RestController
 @RequestMapping("/users")
+@Tag(name = "Users", description = "Cadastra e lista todos os usuários, ou lista especificamente pelo Id")
 public class UserController {
 	
 	@Autowired
 	UserService userService;
-	
-	@Operation(summary = "Este método cadastra um usuário com acesso restrito, garantindo que o nome de usuário seja único e retornando o username e o password criptografado.", method = "POST")
-	@PostMapping("/signup")
-	public ResponseEntity<Void> signup(@RequestBody @Valid UserCreateInput userCreateInput) {
-	    userService.createSimpleUser(userCreateInput);
-	    return ResponseEntity.status(HttpStatus.CREATED).build();
-	}
 	
 	@Operation(summary = "Este método captura todos os usuários cadastrados, retornando o userId, username e suas listas de skills.", method = "GET")
 	@PreAuthorize("hasAnyRole('ROLE_SIMPLE', 'ROLE_ADMIN')")
@@ -46,7 +40,14 @@ public class UserController {
 	@Operation(summary = "Este método captura o usuário cadastrado pelo seu ID, retornando o userId, username e sua lista de skills.", method = "GET")
 	@PreAuthorize("hasAnyRole('ROLE_SIMPLE', 'ROLE_ADMIN')")
 	@GetMapping("/{id}")
-	public ResponseEntity<UserDetailsModel> findById(@PathVariable UUID id) {
+	public ResponseEntity<UserDetailsModel> findById(@Parameter(description = "Id de um usuário", example= "3fa85f64-5717-4562-b3fc-2c963f66afa6")@PathVariable UUID id) {
 		return ResponseEntity.status(HttpStatus.OK).body(userService.findById(id));
+	}
+	
+	@Operation(summary = "Este método cadastra um usuário com acesso restrito, garantindo que o nome de usuário seja único e retornando o username e o password criptografado.", method = "POST")
+	@PostMapping("/signup")
+	public ResponseEntity<Void> signup(@RequestBody @Valid UserCreateInput userCreateInput) {
+	    userService.createSimpleUser(userCreateInput);
+	    return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
 }

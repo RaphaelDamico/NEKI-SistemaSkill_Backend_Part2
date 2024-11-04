@@ -10,9 +10,12 @@ import br.com.neki.sistema_skill_refactored.model.input.UserCreateInput;
 @Mapper
 public interface UserMapper {
 	UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
-	
+
 	UserDetailsModel toUserModel(User user);
+
 	UserCreateInput toUserCreateInput(User user);
+
 	User toEntity(UserDetailsModel userDetailsModel);
+
 	User toEntity(UserCreateInput userCreateInput);
 }

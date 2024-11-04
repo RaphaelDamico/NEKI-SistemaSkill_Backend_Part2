@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import br.com.neki.sistema_skill_refactored.model.SkillCreateAndAssignModel;
 import br.com.neki.sistema_skill_refactored.model.input.SkillCreateInput;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -30,7 +31,7 @@ public class Skill {
 	@Column(name = "skill_tx_skill_name", unique = true)
 	private String skillName;
 
-	@Column(name = "skill_tx_description")
+	@Column(name = "skill_tx_description", length = 300)
 	private String description;
 	
 	@Column(name = "skill_tx_image")

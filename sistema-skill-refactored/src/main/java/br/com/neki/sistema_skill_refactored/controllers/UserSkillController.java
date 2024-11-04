@@ -14,13 +14,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.neki.sistema_skill_refactored.model.UserSkillModel;
-import br.com.neki.sistema_skill_refactored.model.UserSkillUpdateLevelModel;
+import br.com.neki.sistema_skill_refactored.model.input.UserSkillUpdateLevelInput;
 import br.com.neki.sistema_skill_refactored.services.UserSkillService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/user-skills")
+@Tag(name = "User Skills", description = "Atualiza e deleta as skills associadas ao usuário")
 public class UserSkillController {
 
 	@Autowired
@@ -30,15 +33,15 @@ public class UserSkillController {
 	@PreAuthorize("hasAnyRole('ROLE_SIMPLE', 'ROLE_ADMIN')")
 	@PutMapping("/level")
 	public ResponseEntity<UserSkillModel> updateUserSkillLevel(
-			@RequestBody @Valid UserSkillUpdateLevelModel userSkillUpdateLevelModel) {
+			@RequestBody @Valid UserSkillUpdateLevelInput userSkillUpdateLevelInput) {
 		return ResponseEntity.status(HttpStatus.OK)
-				.body(userSkillService.updateUserSkillLevel(userSkillUpdateLevelModel));
+				.body(userSkillService.updateUserSkillLevel(userSkillUpdateLevelInput));
 	}
 	
 	@Operation(summary = "Este método deleta a skill da lista de skills do usuário pelo seu userSkillID", method = "DELETE")
 	@PreAuthorize("hasAnyRole('ROLE_SIMPLE', 'ROLE_ADMIN')")
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> deleteById(@PathVariable UUID id) {
+	public ResponseEntity<Void> deleteById(@Parameter(description="Id de uma skill associada a um usuário", example="3fa85f64-5717-4562-b3fc-2c963f66afa6")@PathVariable UUID id) {
 		userSkillService.deleteUserSkillById(id);
 		return ResponseEntity.noContent().build();
 	}

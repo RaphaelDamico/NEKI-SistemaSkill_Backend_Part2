@@ -10,9 +10,10 @@ import br.com.neki.sistema_skill_refactored.model.UserSkillModel;
 @Mapper
 public interface UserSkillMapper {
 	UserSkillMapper INSTANCE = Mappers.getMapper(UserSkillMapper.class);
-	
+
 	UserSkillModel toUserSkillModel(UserSkill userSkill);
+
 	@Mapping(target = "id", ignore = true)
-    @Mapping(target = "user", ignore = true)
+	@Mapping(target = "user", ignore = true)
 	UserSkill toUserSkillEntity(UserSkillModel userSkillModel);
 }

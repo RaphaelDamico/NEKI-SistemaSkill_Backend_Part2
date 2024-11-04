@@ -1,4 +1,4 @@
-package br.com.neki.sistema_skill_refactored.model;
+package br.com.neki.sistema_skill_refactored.model.input;
 
 import java.util.UUID;
 
@@ -10,7 +10,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class UserSkillUpdateLevelModel {
+public class UserSkillUpdateLevelInput {
 	
 	@NotNull
 	private UUID userSkillId;

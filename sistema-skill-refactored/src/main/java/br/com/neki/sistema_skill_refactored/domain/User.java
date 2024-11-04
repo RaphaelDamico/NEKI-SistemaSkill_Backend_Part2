@@ -58,7 +58,7 @@ public class User implements UserDetails{
 		this.username = userDetailsModel.getUsername();
 		this.userSkills = userDetailsModel.getUserSkills();
 	}
-	
+		
 	@Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(accessType.name()));

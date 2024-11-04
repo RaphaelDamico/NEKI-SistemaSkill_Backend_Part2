@@ -9,7 +9,7 @@ import br.com.neki.sistema_skill_refactored.domain.UserSkill;
 import br.com.neki.sistema_skill_refactored.exceptions.UserSkillNotFoundException;
 import br.com.neki.sistema_skill_refactored.mappers.UserSkillMapper;
 import br.com.neki.sistema_skill_refactored.model.UserSkillModel;
-import br.com.neki.sistema_skill_refactored.model.UserSkillUpdateLevelModel;
+import br.com.neki.sistema_skill_refactored.model.input.UserSkillUpdateLevelInput;
 import br.com.neki.sistema_skill_refactored.repositories.UserSkillRepository;
 
 @Service
@@ -19,11 +19,11 @@ public class UserSkillService {
 	UserSkillRepository userSkillRepository;
 	
 	
-	public UserSkillModel updateUserSkillLevel(UserSkillUpdateLevelModel userSkillUpdateLevelModel) {
-		UserSkill userSkill = userSkillRepository.findById(userSkillUpdateLevelModel.getUserSkillId())
+	public UserSkillModel updateUserSkillLevel(UserSkillUpdateLevelInput userSkillUpdateLevelInput) {
+		UserSkill userSkill = userSkillRepository.findById(userSkillUpdateLevelInput.getUserSkillId())
 				.orElseThrow(() -> new UserSkillNotFoundException(
-						userSkillUpdateLevelModel.getUserSkillId()));
-		userSkill.setLevel(userSkillUpdateLevelModel.getLevel());
+						userSkillUpdateLevelInput.getUserSkillId()));
+		userSkill.setLevel(userSkillUpdateLevelInput.getLevel());
 		userSkillRepository.save(userSkill);
 		return UserSkillMapper.INSTANCE.toUserSkillModel(userSkill);
 	}

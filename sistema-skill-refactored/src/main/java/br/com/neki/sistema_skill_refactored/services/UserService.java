@@ -72,8 +72,6 @@ public class UserService implements UserDetailsService {
 		return new JwtTokenRecord(jwtTokenService.generateToken(userDetails), userDetails.getId());
 	}
 
-	
-
 	public UserDetailsModel findById(UUID id) {
 		User user = userRepository.findById(id)
 				.orElseThrow(() -> new UserNotFoundException(id));

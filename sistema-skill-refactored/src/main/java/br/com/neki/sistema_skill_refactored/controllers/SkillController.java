@@ -3,6 +3,8 @@ package br.com.neki.sistema_skill_refactored.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -20,10 +22,13 @@ import br.com.neki.sistema_skill_refactored.model.SkillModel;
 import br.com.neki.sistema_skill_refactored.model.input.SkillCreateInput;
 import br.com.neki.sistema_skill_refactored.services.SkillService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/skills")
+@Tag(name = "Skills", description = "Cria skills e adiciona à lista de skills do usuário")
 public class SkillController {
 	
 	@Autowired
@@ -32,9 +37,9 @@ public class SkillController {
 	@Operation(summary = "Este método captura todas as skills cadastradas no banco e também filtra por nome caso o consumidor da API deseje, retornando o skillId, skillName, descrição e o url da imagem da skill.", method = "GET")
 	@PreAuthorize("hasAnyRole('ROLE_SIMPLE', 'ROLE_ADMIN')")
 	@GetMapping
-	public List<SkillModel> getAllSkills(
-	    @RequestParam(value = "skillNameFilter", required = false) String skillNameFilter) {
-	    return skillService.findAll(skillNameFilter);
+	public Page<SkillModel> getAllSkills(@Parameter(name = "Filtro", description = "Filtra as skills pelo nome", example = "Java")
+	    @RequestParam(value = "skillNameFilter", required = false) String skillNameFilter, Pageable pageable) {
+	    return skillService.findAll(skillNameFilter, pageable);
 	}
 	
 	@Operation(summary = "Este método cadastra uma skill no banco, garantindo que o nome da skill seja único, que possua descrição e que além de possuir url, ele seja válido.", method = "POST")

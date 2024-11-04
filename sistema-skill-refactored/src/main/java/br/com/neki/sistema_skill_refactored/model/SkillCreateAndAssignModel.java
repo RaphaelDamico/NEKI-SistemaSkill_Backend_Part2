@@ -3,10 +3,12 @@ package br.com.neki.sistema_skill_refactored.model;
 import java.util.UUID;
 
 import br.com.neki.sistema_skill_refactored.core.validation.annotation.ValidImageUrl;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,9 +23,11 @@ public class SkillCreateAndAssignModel {
 	private String skillName;
 
 	@NotBlank(message = "The description field is required")
+	@Size(max = 300, message = "The description must be at most 300 characters")
 	private String description;
 
 	@ValidImageUrl
+	@Schema(example = "https://example.com/exemple.png")
 	private String image;
 
 	@NotNull(message = "The value cannot be null")
