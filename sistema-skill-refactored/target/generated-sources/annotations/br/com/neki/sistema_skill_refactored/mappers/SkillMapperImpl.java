@@ -1,15 +1,18 @@
 package br.com.neki.sistema_skill_refactored.mappers;
 
 import br.com.neki.sistema_skill_refactored.domain.Skill;
+import br.com.neki.sistema_skill_refactored.model.SkillCreateAndAssignModel;
+import br.com.neki.sistema_skill_refactored.model.SkillCreateModel;
 import br.com.neki.sistema_skill_refactored.model.SkillModel;
-import br.com.neki.sistema_skill_refactored.model.input.SkillCreateInput;
 import javax.annotation.processing.Generated;
+import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-11-03T22:00:16-0300",
+    date = "2024-11-04T09:01:44-0300",
     comments = "version: 1.6.2, compiler: Eclipse JDT (IDE) 3.37.0.v20240215-1558, environment: Java 17.0.11 (Eclipse Adoptium)"
 )
+@Component
 public class SkillMapperImpl implements SkillMapper {
 
     @Override
@@ -29,18 +32,18 @@ public class SkillMapperImpl implements SkillMapper {
     }
 
     @Override
-    public SkillCreateInput toSkillCreateInput(Skill skill) {
+    public SkillCreateModel toSkillCreateInput(Skill skill) {
         if ( skill == null ) {
             return null;
         }
 
-        SkillCreateInput skillCreateInput = new SkillCreateInput();
+        SkillCreateModel skillCreateModel = new SkillCreateModel();
 
-        skillCreateInput.setDescription( skill.getDescription() );
-        skillCreateInput.setImage( skill.getImage() );
-        skillCreateInput.setSkillName( skill.getSkillName() );
+        skillCreateModel.setDescription( skill.getDescription() );
+        skillCreateModel.setImage( skill.getImage() );
+        skillCreateModel.setSkillName( skill.getSkillName() );
 
-        return skillCreateInput;
+        return skillCreateModel;
     }
 
     @Override
@@ -60,7 +63,7 @@ public class SkillMapperImpl implements SkillMapper {
     }
 
     @Override
-    public Skill toEntity(SkillCreateInput skillCreateModel) {
+    public Skill toEntity(SkillCreateModel skillCreateModel) {
         if ( skillCreateModel == null ) {
             return null;
         }
@@ -70,6 +73,21 @@ public class SkillMapperImpl implements SkillMapper {
         skill.setDescription( skillCreateModel.getDescription() );
         skill.setImage( skillCreateModel.getImage() );
         skill.setSkillName( skillCreateModel.getSkillName() );
+
+        return skill;
+    }
+
+    @Override
+    public Skill toEntity(SkillCreateAndAssignModel skillCreateAndAssignModel) {
+        if ( skillCreateAndAssignModel == null ) {
+            return null;
+        }
+
+        Skill skill = new Skill();
+
+        skill.setDescription( skillCreateAndAssignModel.getDescription() );
+        skill.setImage( skillCreateAndAssignModel.getImage() );
+        skill.setSkillName( skillCreateAndAssignModel.getSkillName() );
 
         return skill;
     }

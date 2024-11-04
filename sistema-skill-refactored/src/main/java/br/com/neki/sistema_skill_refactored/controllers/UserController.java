@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.neki.sistema_skill_refactored.model.UserCreateModel;
 import br.com.neki.sistema_skill_refactored.model.UserDetailsModel;
-import br.com.neki.sistema_skill_refactored.model.input.UserCreateInput;
 import br.com.neki.sistema_skill_refactored.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -46,8 +46,8 @@ public class UserController {
 	
 	@Operation(summary = "Este método cadastra um usuário com acesso restrito, garantindo que o nome de usuário seja único e retornando o username e o password criptografado.", method = "POST")
 	@PostMapping("/signup")
-	public ResponseEntity<Void> signup(@RequestBody @Valid UserCreateInput userCreateInput) {
-	    userService.createSimpleUser(userCreateInput);
+	public ResponseEntity<Void> signup(@RequestBody @Valid UserCreateModel userCreateModel) {
+	    userService.createSimpleUser(userCreateModel);
 	    return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
 }

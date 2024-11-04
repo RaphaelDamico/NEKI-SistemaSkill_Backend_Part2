@@ -1,4 +1,4 @@
-package br.com.neki.sistema_skill_refactored.model.input;
+package br.com.neki.sistema_skill_refactored.model;
 
 import br.com.neki.sistema_skill_refactored.core.validation.annotation.ValidImageUrl;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -9,7 +9,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class SkillCreateInput {
+public class SkillCreateModel {
 	
 	@NotBlank(message = "The name field is required")
 	private String skillName;

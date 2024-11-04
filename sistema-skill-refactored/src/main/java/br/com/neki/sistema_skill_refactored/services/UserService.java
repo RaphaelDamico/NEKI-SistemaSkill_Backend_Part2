@@ -21,8 +21,8 @@ import br.com.neki.sistema_skill_refactored.domain.enums.AccessType;
 import br.com.neki.sistema_skill_refactored.exceptions.UserNotFoundException;
 import br.com.neki.sistema_skill_refactored.exceptions.UsernameAlreadyExistsException;
 import br.com.neki.sistema_skill_refactored.mappers.UserMapper;
+import br.com.neki.sistema_skill_refactored.model.UserCreateModel;
 import br.com.neki.sistema_skill_refactored.model.UserDetailsModel;
-import br.com.neki.sistema_skill_refactored.model.input.UserCreateInput;
 import br.com.neki.sistema_skill_refactored.records.JwtTokenRecord;
 import br.com.neki.sistema_skill_refactored.records.LoginCredentialsRecord;
 import br.com.neki.sistema_skill_refactored.repositories.UserRepository;
@@ -43,23 +43,32 @@ public class UserService implements UserDetailsService {
 	@Lazy
 	private AuthenticationManager authenticationManager;
 
+	@Autowired
+	private UserMapper userMapper;
+
 	private final PasswordEncoder encryptedPassword = new BCryptPasswordEncoder();
-	
+
 	public List<UserDetailsModel> findAll() {
 		List<User> users = userRepository.findAll();
 		List<UserDetailsModel> userDetailsModel = new ArrayList<>();
 		for (User user : users) {
-			userDetailsModel.add(UserMapper.INSTANCE.toUserModel(user));
+			userDetailsModel.add(userMapper.toUserModel(user));
 		}
 		return userDetailsModel;
 	}
+	
+	public UserDetailsModel findById(UUID id) {
+		User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+		return userMapper.toUserModel(user);
+	}
 
-	public void createSimpleUser(UserCreateInput userCreateInput) {
-		Optional<User> existingUser = userRepository.findByUsername(userCreateInput.getUsername());
+	public void createSimpleUser(UserCreateModel userCreateModel) {
+		Optional<User> existingUser = userRepository.findByUsername(userCreateModel.getUsername());
 		if (existingUser.isPresent())
-			throw new UsernameAlreadyExistsException("The username" + userCreateInput.getUsername() + " already exists.");
-		User userSave = new User(userCreateInput);
-		userSave.setPassword(encryptedPassword.encode(userCreateInput.getPassword()));
+			throw new UsernameAlreadyExistsException(
+					"The username" + userCreateModel.getUsername() + " already exists.");
+		User userSave = userMapper.toEntity(userCreateModel);
+		userSave.setPassword(encryptedPassword.encode(userCreateModel.getPassword()));
 		userSave.setAccessType(AccessType.ROLE_SIMPLE);
 		userRepository.save(userSave);
 	}
@@ -70,12 +79,6 @@ public class UserService implements UserDetailsService {
 		Authentication authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
 		User userDetails = (User) authentication.getPrincipal();
 		return new JwtTokenRecord(jwtTokenService.generateToken(userDetails), userDetails.getId());
-	}
-
-	public UserDetailsModel findById(UUID id) {
-		User user = userRepository.findById(id)
-				.orElseThrow(() -> new UserNotFoundException(id));
-		return UserMapper.INSTANCE.toUserModel(user);
 	}
 
 	@Override
@@ -89,4 +92,3 @@ public class UserService implements UserDetailsService {
 	}
 
 }
-

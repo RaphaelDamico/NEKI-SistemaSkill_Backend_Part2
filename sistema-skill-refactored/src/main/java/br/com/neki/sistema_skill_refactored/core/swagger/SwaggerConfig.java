@@ -17,5 +17,5 @@ import io.swagger.v3.oas.annotations.security.SecurityScheme;
     bearerFormat = "JWT"
 )
 public class SwaggerConfig {
- 
+
 }

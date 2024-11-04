@@ -17,5 +17,5 @@ public interface SkillRepository extends JpaRepository<Skill, UUID> {
 	Optional<Skill> findBySkillName(String skillName);
 
 	 @Query("SELECT s FROM Skill s WHERE LOWER(s.skillName) LIKE LOWER(CONCAT('%', :skillNameFilter, '%'))")
-	 Page<Skill> findByNameContaining(@Param("skillNameFilter") String skillNameFilter, Pageable pageable);
+	 Page<Skill> findBySkillNameContaining(@Param("skillNameFilter") String skillNameFilter, Pageable pageable);
 }

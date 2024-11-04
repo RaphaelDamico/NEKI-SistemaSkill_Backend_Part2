@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.neki.sistema_skill_refactored.model.UserSkillModel;
-import br.com.neki.sistema_skill_refactored.model.input.UserSkillUpdateLevelInput;
+import br.com.neki.sistema_skill_refactored.model.UserSkillUpdateLevelModel;
 import br.com.neki.sistema_skill_refactored.services.UserSkillService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -33,9 +33,9 @@ public class UserSkillController {
 	@PreAuthorize("hasAnyRole('ROLE_SIMPLE', 'ROLE_ADMIN')")
 	@PutMapping("/level")
 	public ResponseEntity<UserSkillModel> updateUserSkillLevel(
-			@RequestBody @Valid UserSkillUpdateLevelInput userSkillUpdateLevelInput) {
+			@RequestBody @Valid UserSkillUpdateLevelModel userSkillUpdateLevelModel) {
 		return ResponseEntity.status(HttpStatus.OK)
-				.body(userSkillService.updateUserSkillLevel(userSkillUpdateLevelInput));
+				.body(userSkillService.updateUserSkillLevel(userSkillUpdateLevelModel));
 	}
 	
 	@Operation(summary = "Este método deleta a skill da lista de skills do usuário pelo seu userSkillID", method = "DELETE")

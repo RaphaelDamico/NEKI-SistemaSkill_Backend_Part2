@@ -38,7 +38,7 @@ public class UserSkill {
 	@JoinColumn(name = "skill_cd_id")
 	private Skill skill;
 
-	@Column(name = "level")
+	@Column(name = "user_skill_int_level")
 	private Integer level;
 
 }

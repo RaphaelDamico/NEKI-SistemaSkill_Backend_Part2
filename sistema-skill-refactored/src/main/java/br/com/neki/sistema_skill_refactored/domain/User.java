@@ -9,8 +9,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import br.com.neki.sistema_skill_refactored.domain.enums.AccessType;
-import br.com.neki.sistema_skill_refactored.model.UserDetailsModel;
-import br.com.neki.sistema_skill_refactored.model.input.UserCreateInput;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -48,16 +46,10 @@ public class User implements UserDetails{
 	
 	private AccessType accessType;
 	
-	public User(UserCreateInput userCreateInput) {
-		this.username = userCreateInput.getUsername();
-		this.password = userCreateInput.getPassword();
-	}
-	
-	public User(UserDetailsModel userDetailsModel) {
-		this.id = userDetailsModel.getId();
-		this.username = userDetailsModel.getUsername();
-		this.userSkills = userDetailsModel.getUserSkills();
-	}
+	public boolean hasSkill(Skill skill) {
+        return userSkills.stream()
+                .anyMatch(userSkill -> userSkill.getSkill().getId().equals(skill.getId()));
+    }
 		
 	@Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
