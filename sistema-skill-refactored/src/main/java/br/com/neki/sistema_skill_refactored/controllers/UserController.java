@@ -39,9 +39,9 @@ public class UserController {
 	
 	@Operation(summary = "Este método captura o usuário cadastrado pelo seu ID, retornando o userId, username e sua lista de skills.", method = "GET")
 	@PreAuthorize("hasAnyRole('ROLE_SIMPLE', 'ROLE_ADMIN')")
-	@GetMapping("/{id}")
-	public ResponseEntity<UserDetailsModel> findById(@Parameter(description = "Id de um usuário", example= "3fa85f64-5717-4562-b3fc-2c963f66afa6")@PathVariable UUID id) {
-		return ResponseEntity.status(HttpStatus.OK).body(userService.findById(id));
+	@GetMapping("/{userId}")
+	public ResponseEntity<UserDetailsModel> findById(@Parameter(description = "Id de um usuário", example= "3fa85f64-5717-4562-b3fc-2c963f66afa6")@PathVariable UUID userId) {
+		return ResponseEntity.status(HttpStatus.OK).body(userService.findById(userId));
 	}
 	
 	@Operation(summary = "Este método cadastra um usuário com acesso restrito, garantindo que o nome de usuário seja único e retornando o username e o password criptografado.", method = "POST")

@@ -23,7 +23,7 @@ public class Skill {
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
 	@Column(name="skill_cd_id")
-	private UUID id;
+	private UUID skillId;
 
 	@Column(name = "skill_tx_skill_name", unique = true)
 	private String skillName;

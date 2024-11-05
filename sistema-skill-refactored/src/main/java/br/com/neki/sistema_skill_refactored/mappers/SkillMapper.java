@@ -13,7 +13,7 @@ public interface SkillMapper {
 	SkillMapper INSTANCE = Mappers.getMapper(SkillMapper.class);
 	
 	SkillModel toSkillModel(Skill skill);
-	SkillCreateModel toSkillCreateInput(Skill skill);
+	SkillCreateModel toSkillCreateModel(Skill skill);
 	Skill toEntity(SkillModel skillModel);
 	Skill toEntity(SkillCreateModel skillCreateModel);
 	Skill toEntity(SkillCreateAndAssignModel skillCreateAndAssignModel);

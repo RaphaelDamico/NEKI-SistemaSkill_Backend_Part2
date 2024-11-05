@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-11-04T11:44:34-0300",
+    date = "2024-11-04T22:00:09-0300",
     comments = "version: 1.6.2, compiler: Eclipse JDT (IDE) 3.37.0.v20240215-1558, environment: Java 17.0.11 (Eclipse Adoptium)"
 )
 @Component
@@ -26,6 +26,7 @@ public class UserSkillMapperImpl implements UserSkillMapper {
 
         userSkillModel.setLevel( userSkill.getLevel() );
         userSkillModel.setSkill( skillToSkillModel( userSkill.getSkill() ) );
+        userSkillModel.setUserSkillId( userSkill.getUserSkillId() );
 
         return userSkillModel;
     }
@@ -39,6 +40,7 @@ public class UserSkillMapperImpl implements UserSkillMapper {
         UserSkillUpdateLevelModel userSkillUpdateLevelModel = new UserSkillUpdateLevelModel();
 
         userSkillUpdateLevelModel.setLevel( userSkill.getLevel() );
+        userSkillUpdateLevelModel.setUserSkillId( userSkill.getUserSkillId() );
 
         return userSkillUpdateLevelModel;
     }
@@ -53,6 +55,7 @@ public class UserSkillMapperImpl implements UserSkillMapper {
 
         userSkill.setLevel( userSkillModel.getLevel() );
         userSkill.setSkill( skillModelToSkill( userSkillModel.getSkill() ) );
+        userSkill.setUserSkillId( userSkillModel.getUserSkillId() );
 
         return userSkill;
     }
@@ -66,6 +69,7 @@ public class UserSkillMapperImpl implements UserSkillMapper {
         UserSkill userSkill = new UserSkill();
 
         userSkill.setLevel( userSkillUpdateLevelModel.getLevel() );
+        userSkill.setUserSkillId( userSkillUpdateLevelModel.getUserSkillId() );
 
         return userSkill;
     }
@@ -78,8 +82,8 @@ public class UserSkillMapperImpl implements UserSkillMapper {
         SkillModel skillModel = new SkillModel();
 
         skillModel.setDescription( skill.getDescription() );
-        skillModel.setId( skill.getId() );
         skillModel.setImage( skill.getImage() );
+        skillModel.setSkillId( skill.getSkillId() );
         skillModel.setSkillName( skill.getSkillName() );
 
         return skillModel;
@@ -93,8 +97,8 @@ public class UserSkillMapperImpl implements UserSkillMapper {
         Skill skill = new Skill();
 
         skill.setDescription( skillModel.getDescription() );
-        skill.setId( skillModel.getId() );
         skill.setImage( skillModel.getImage() );
+        skill.setSkillId( skillModel.getSkillId() );
         skill.setSkillName( skillModel.getSkillName() );
 
         return skill;

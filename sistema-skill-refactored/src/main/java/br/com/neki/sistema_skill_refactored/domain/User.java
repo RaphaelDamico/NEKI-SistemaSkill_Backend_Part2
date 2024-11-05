@@ -33,7 +33,7 @@ public class User implements UserDetails{
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
 	@Column(name = "user_cd_id")
-	private UUID id;
+	private UUID userId;
 	
 	@Column(name = "user_tx_username", unique = true)
 	private String username;
@@ -45,12 +45,7 @@ public class User implements UserDetails{
 	private List<UserSkill> userSkills;
 	
 	private AccessType accessType;
-	
-	public boolean hasSkill(Skill skill) {
-        return userSkills.stream()
-                .anyMatch(userSkill -> userSkill.getSkill().getId().equals(skill.getId()));
-    }
-		
+			
 	@Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(accessType.name()));

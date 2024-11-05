@@ -26,9 +26,8 @@ public class UserSkill {
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
 	@Column(name = "user_skill_cd_id")
-	private UUID id;
+	private UUID userSkillId;
 	
-
 	@JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_cd_id")

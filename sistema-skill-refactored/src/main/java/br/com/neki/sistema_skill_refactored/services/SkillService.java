@@ -54,6 +54,8 @@ public class SkillService {
 				throw new SkillNotFoundException("No skill found!");
 		} else {
 			skills = skillRepository.findBySkillNameContaining(skillNameFilter, pageable);
+			if (skills.isEmpty())
+	            throw new SkillNotFoundException("No skill found with the provided filter!");
 		}
 		return skills.map(skillMapper::toSkillModel);
 	}
@@ -77,32 +79,43 @@ public class SkillService {
 		skillRepository.save(skillSave);
 		User user = userRepository.findById(skillCreateAndAssignModel.getUserId())
 				.orElseThrow(() -> new UserNotFoundException(skillCreateAndAssignModel.getUserId()));
-		assignSkillToUser(user, skillSave, skillCreateAndAssignModel.getLevel());
-		return skillMapper.toSkillCreateInput(skillSave);
-	}
-
-	@Transactional
-	public List<UserSkillModel> addExistingSkillToUser(List<SkillAssignExistingModel> listSkillAssignExistingModel) {
-		UUID userId = UUID.fromString(listSkillAssignExistingModel.get(0).getUserId());
-		User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
-		for (SkillAssignExistingModel assignExistingSkillDTO : listSkillAssignExistingModel) {
-			UUID skillId = UUID.fromString(assignExistingSkillDTO.getSkillId());
-			Skill skill = skillRepository.findById(skillId).orElseThrow(() -> new SkillNotFoundException(skillId));
-			assignSkillToUser(user, skill, 1);
-		}
-		return user.getUserSkills().stream().map(userSkillMapper::toUserSkillModel).collect(Collectors.toList());
-	}
-
-	private void assignSkillToUser(User user, Skill skill, int level) {
-		if (user.hasSkill(skill)) {
-			throw new SkillAlreadyAssignedException("User already has this skill: " + skill.getSkillName());
-		}
 		UserSkill userSkill = new UserSkill();
-		userSkill.setSkill(skill);
+		userSkill.setSkill(skillSave);
 		userSkill.setUser(user);
-		userSkill.setLevel(level);
+		userSkill.setLevel(skillCreateAndAssignModel.getLevel());
 		user.getUserSkills().add(userSkill);
 		userSkillRepository.save(userSkill);
 		userRepository.save(user);
+		return skillMapper.toSkillCreateModel(skillSave);
 	}
+	
+	
+	@Transactional
+	public List<UserSkillModel> addExistingSkillToUser(List<SkillAssignExistingModel> listSkillAssignExistingModel) {
+		User user = userRepository.findById(listSkillAssignExistingModel.get(0).getUserId())
+				.orElseThrow(() -> new UserNotFoundException(
+						"No user found with id: " + listSkillAssignExistingModel.get(0).getUserId()));
+		for (SkillAssignExistingModel assignExistingSkillModel : listSkillAssignExistingModel) {
+			Skill skill = skillRepository.findById(assignExistingSkillModel.getSkillId())
+					.orElseThrow(() -> new SkillNotFoundException(
+							"No skill found with id: " + assignExistingSkillModel.getSkillId()));
+			boolean alreadyExists = user.getUserSkills().stream()
+					.anyMatch(userSkill -> userSkill.getSkill().getSkillId().equals(skill.getSkillId()));
+			if(alreadyExists)
+				throw new IllegalArgumentException("User already has this skill: " + skill.getSkillName());
+			UserSkill userSkill = new UserSkill();
+			userSkill.setSkill(skill);
+			userSkill.setUser(user);
+			userSkill.setLevel(1);
+			user.getUserSkills().add(userSkill);
+			userSkillRepository.save(userSkill);
+			userRepository.save(user);
+		}
+
+		return user.getUserSkills().stream()
+	            .map(userSkillMapper::toUserSkillModel)
+	            .collect(Collectors.toList());
+
+	}
+
 }

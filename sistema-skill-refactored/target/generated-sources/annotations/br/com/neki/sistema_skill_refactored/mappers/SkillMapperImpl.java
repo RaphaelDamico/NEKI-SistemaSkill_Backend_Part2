@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-11-04T09:01:44-0300",
+    date = "2024-11-04T21:04:44-0300",
     comments = "version: 1.6.2, compiler: Eclipse JDT (IDE) 3.37.0.v20240215-1558, environment: Java 17.0.11 (Eclipse Adoptium)"
 )
 @Component
@@ -24,15 +24,15 @@ public class SkillMapperImpl implements SkillMapper {
         SkillModel skillModel = new SkillModel();
 
         skillModel.setDescription( skill.getDescription() );
-        skillModel.setId( skill.getId() );
         skillModel.setImage( skill.getImage() );
+        skillModel.setSkillId( skill.getSkillId() );
         skillModel.setSkillName( skill.getSkillName() );
 
         return skillModel;
     }
 
     @Override
-    public SkillCreateModel toSkillCreateInput(Skill skill) {
+    public SkillCreateModel toSkillCreateModel(Skill skill) {
         if ( skill == null ) {
             return null;
         }
@@ -55,8 +55,8 @@ public class SkillMapperImpl implements SkillMapper {
         Skill skill = new Skill();
 
         skill.setDescription( skillModel.getDescription() );
-        skill.setId( skillModel.getId() );
         skill.setImage( skillModel.getImage() );
+        skill.setSkillId( skillModel.getSkillId() );
         skill.setSkillName( skillModel.getSkillName() );
 
         return skill;

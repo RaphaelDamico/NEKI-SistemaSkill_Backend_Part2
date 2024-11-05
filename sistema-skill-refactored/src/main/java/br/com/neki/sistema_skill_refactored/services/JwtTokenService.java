@@ -28,7 +28,7 @@ public class JwtTokenService {
 		try {
 			Algorithm algorithm = Algorithm.HMAC256(secretKey);
 			return JWT.create().withIssuer(issuer).withIssuedAt(new Date()).withExpiresAt(expirationDate())
-					.withSubject(user.getUsername()).withClaim("id", user.getId().toString()).sign(algorithm);
+					.withSubject(user.getUsername()).withClaim("id", user.getUserId().toString()).sign(algorithm);
 		} catch (JWTCreationException exception) {
 			throw new JWTCreationException("Error generating token", exception);
 		}

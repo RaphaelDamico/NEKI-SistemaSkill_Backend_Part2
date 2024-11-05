@@ -7,7 +7,7 @@ import br.com.neki.sistema_skill_refactored.domain.User;
 import br.com.neki.sistema_skill_refactored.model.UserCreateModel;
 import br.com.neki.sistema_skill_refactored.model.UserDetailsModel;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {UserSkillMapper.class})
 public interface UserMapper {
 	UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 

@@ -57,8 +57,8 @@ public class UserService implements UserDetailsService {
 		return userDetailsModel;
 	}
 	
-	public UserDetailsModel findById(UUID id) {
-		User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+	public UserDetailsModel findById(UUID userId) {
+		User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
 		return userMapper.toUserModel(user);
 	}
 
@@ -78,7 +78,7 @@ public class UserService implements UserDetailsService {
 				loginCredentialsRecord.username(), loginCredentialsRecord.password());
 		Authentication authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
 		User userDetails = (User) authentication.getPrincipal();
-		return new JwtTokenRecord(jwtTokenService.generateToken(userDetails), userDetails.getId());
+		return new JwtTokenRecord(jwtTokenService.generateToken(userDetails), userDetails.getUserId());
 	}
 
 	@Override

@@ -14,7 +14,7 @@ import lombok.Setter;
 public class SkillModel {
 
 	@NotNull(message = "The skill id cannot be null")
-	private UUID id;
+	private UUID skillId;
 
 	@NotBlank(message = "The name field is required")
 	private String skillName;
