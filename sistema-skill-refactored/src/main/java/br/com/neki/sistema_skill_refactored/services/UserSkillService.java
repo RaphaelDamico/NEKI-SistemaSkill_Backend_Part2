@@ -3,6 +3,8 @@ package br.com.neki.sistema_skill_refactored.services;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.com.neki.sistema_skill_refactored.domain.UserSkill;
@@ -19,7 +21,17 @@ public class UserSkillService {
 	UserSkillRepository userSkillRepository;
 	
 	@Autowired
+	UserService userService;
+	
+	@Autowired
 	UserSkillMapper userSkillMapper;
+	
+	public Page<UserSkillModel> getAllUserSkillsfromUser(Pageable pageable) {
+		UUID userId = userService.getAuthenticatedUserId();
+		Page<UserSkill> userSkills;
+		userSkills = userSkillRepository.findByUserUserId(userId, pageable);
+		return userSkills.map(userSkillMapper::toUserSkillModel);
+	}
 	
 	
 	public UserSkillModel updateUserSkillLevel(UserSkillUpdateLevelModel userSkillUpdateLevelModel) {
