@@ -16,10 +16,11 @@ import br.com.neki.sistema_skill_refactored.domain.Skill;
 public interface SkillRepository extends JpaRepository<Skill, UUID> {
 	Optional<Skill> findBySkillName(String skillName);
 
-    @Query("SELECT s FROM Skill s WHERE s NOT IN (SELECT us.skill FROM UserSkill us WHERE us.user.userId = :userId)")
-    Page<Skill> findAvailableSkillsForUser(@Param("userId") UUID userId, Pageable pageable);
+	@Query("SELECT s FROM Skill s WHERE s NOT IN (SELECT us.skill FROM UserSkill us WHERE us.user.userId = :userId)")
+	Page<Skill> findAvailableSkillsForUser(@Param("userId") UUID userId, Pageable pageable);
 
-    @Query("SELECT s FROM Skill s WHERE LOWER(s.skillName) LIKE LOWER(CONCAT('%', :skillNameFilter, '%')) AND s NOT IN (SELECT us.skill FROM UserSkill us WHERE us.user.userId = :userId)")
-    Page<Skill> findAvailableSkillsForUserWithFilter(@Param("userId") UUID userId, @Param("skillNameFilter") String skillNameFilter, Pageable pageable);
+	@Query("SELECT s FROM Skill s WHERE LOWER(s.skillName) LIKE LOWER(CONCAT('%', :skillNameFilter, '%')) AND s NOT IN (SELECT us.skill FROM UserSkill us WHERE us.user.userId = :userId)")
+	Page<Skill> findAvailableSkillsForUserWithFilter(@Param("userId") UUID userId,
+			@Param("skillNameFilter") String skillNameFilter, Pageable pageable);
 
 }

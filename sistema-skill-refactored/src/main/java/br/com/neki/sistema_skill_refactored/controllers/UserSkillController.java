@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.neki.sistema_skill_refactored.model.UserSkillModel;
@@ -33,15 +34,15 @@ public class UserSkillController {
 	@Autowired
 	UserSkillService userSkillService;
 	
-	@Operation(summary = "Captura todas as skills cadastradas na lista de skills do usuário autenticado, com suporte a paginação.", method = "GET")
-    @PreAuthorize("hasAnyRole('ROLE_SIMPLE', 'ROLE_ADMIN')")
-    @GetMapping
-    public ResponseEntity<Page<UserSkillModel>> getAllUserSkills(
-            @Parameter(description = "Parâmetros de paginação e ordenação", schema = @Schema(type = "object", example = "{\"page\": 0, \"size\": 5, \"sort\": \"skill.skillName,asc\"}")) Pageable pageable) {
-        
-        Page<UserSkillModel> userSkills = userSkillService.getAllUserSkillsfromUser(pageable);
-        return ResponseEntity.status(HttpStatus.OK).body(userSkills);
-    }
+	 @Operation(summary = "Este método captura todas as UserSkills do usuário autenticado, com opção de filtro por nome da skill e suporte a paginação.", method = "GET")
+	    @PreAuthorize("hasAnyRole('ROLE_SIMPLE', 'ROLE_ADMIN')")
+	    @GetMapping
+	    public Page<UserSkillModel> getAllUserSkills(
+	            @Parameter(name = "skillNameFilter", description = "Filtra as skills pelo nome") @RequestParam(value = "skillNameFilter", required = false) String skillNameFilter,
+	            @Parameter(description = "Parâmetros de paginação e ordenação", schema = @Schema(type = "object", example = "{\"page\": 0, \"size\": 5, \"sort\": \"skill.skillName,asc\"}")) Pageable pageable) {
+	        
+	        return userSkillService.findAll(skillNameFilter, pageable);
+	    }
 
 	@Operation(summary = "Este método atualiza o level da skill cadastrada na lista de skills do usuário, garantindo que seu level seja no mínimo 1 e no máximo 5 e retornando as informações da skill com o level atualizado.", method = "PUT")
 	@PreAuthorize("hasAnyRole('ROLE_SIMPLE', 'ROLE_ADMIN')")

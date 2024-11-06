@@ -26,12 +26,19 @@ public class UserSkillService {
 	@Autowired
 	UserSkillMapper userSkillMapper;
 	
-	public Page<UserSkillModel> getAllUserSkillsfromUser(Pageable pageable) {
-		UUID userId = userService.getAuthenticatedUserId();
-		Page<UserSkill> userSkills;
-		userSkills = userSkillRepository.findByUserUserId(userId, pageable);
-		return userSkills.map(userSkillMapper::toUserSkillModel);
-	}
+	 public Page<UserSkillModel> findAll(String skillNameFilter, Pageable pageable) {
+	        UUID userId = userService.getAuthenticatedUserId();
+	        Page<UserSkill> userSkills;
+	        if (skillNameFilter == null || skillNameFilter.isEmpty()) {
+	            userSkills = userSkillRepository.findByUserUserId(userId, pageable);
+	        } else {
+	            userSkills = userSkillRepository.findByUserUserIdAndSkillNameFilter(userId, skillNameFilter, pageable);
+	        }
+	        if (userSkills.isEmpty()) {
+	            throw new UserSkillNotFoundException("No user skills found.");
+	        }
+	        return userSkills.map(userSkillMapper::toUserSkillModel);
+	    }
 	
 	
 	public UserSkillModel updateUserSkillLevel(UserSkillUpdateLevelModel userSkillUpdateLevelModel) {

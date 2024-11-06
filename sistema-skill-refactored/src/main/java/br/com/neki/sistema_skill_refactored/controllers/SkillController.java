@@ -35,7 +35,7 @@ public class SkillController {
 	@Autowired
 	SkillService skillService;
 
-	@Operation(summary = "Este método captura todas as skills cadastradas no banco e também filtra por nome caso o consumidor da API deseje, retornando o skillId, skillName, descrição e o url da imagem da skill.", method = "GET")
+	@Operation(summary = "Este método captura todas as Skills cadastradas no banco, com opção de filtro por nome da skill e suporte a paginação.", method = "GET")
 	@PreAuthorize("hasAnyRole('ROLE_SIMPLE', 'ROLE_ADMIN')")
 	@GetMapping
 	public Page<SkillModel> getAllSkills(
