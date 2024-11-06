@@ -12,10 +12,10 @@ import br.com.neki.sistema_skill_refactored.domain.UserSkill;
 
 public interface UserSkillRepository extends JpaRepository<UserSkill, UUID> {
 
-	Page<UserSkill> findByUserUserId(UUID userId, Pageable pageable);
+	 @Query("SELECT us FROM UserSkill us JOIN FETCH us.skill WHERE us.user.userId = :userId")
+	    Page<UserSkill> findByUserUserId(@Param("userId") UUID userId, Pageable pageable);
 
-	@Query("SELECT us FROM UserSkill us WHERE us.user.userId = :userId AND LOWER(us.skill.skillName) LIKE LOWER(CONCAT('%', :skillNameFilter, '%'))")
-	Page<UserSkill> findByUserUserIdAndSkillNameFilter(@Param("userId") UUID userId,
-			@Param("skillNameFilter") String skillNameFilter, Pageable pageable);
+	    @Query("SELECT us FROM UserSkill us JOIN FETCH us.skill WHERE us.user.userId = :userId AND LOWER(us.skill.skillName) LIKE LOWER(CONCAT('%', :skillNameFilter, '%'))")
+	    Page<UserSkill> findByUserUserIdAndSkillNameFilter(@Param("userId") UUID userId, @Param("skillNameFilter") String skillNameFilter, Pageable pageable);
 
 }
