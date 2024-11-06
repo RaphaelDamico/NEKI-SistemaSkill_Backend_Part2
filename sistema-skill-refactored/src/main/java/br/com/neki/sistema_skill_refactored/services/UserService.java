@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -79,6 +80,13 @@ public class UserService implements UserDetailsService {
 		Authentication authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
 		User userDetails = (User) authentication.getPrincipal();
 		return new JwtTokenRecord(jwtTokenService.generateToken(userDetails), userDetails.getUserId());
+	}
+	
+	public UUID getAuthenticatedUserId() {
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		if (principal instanceof User)
+	        return ((User) principal).getUserId();
+	    throw new IllegalStateException("User not authenticated or authentication principal type is unexpected.");
 	}
 
 	@Override

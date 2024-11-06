@@ -34,38 +34,40 @@ public class AuthenticationFilter extends OncePerRequestFilter {
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-			throws ServletException, IOException {
-		String requestURI = request.getRequestURI();
+	        throws ServletException, IOException {
+	    String requestURI = request.getRequestURI();
 
-		if (isExcluded(requestURI)) {
-			System.out.println("Request to excluded url: " + requestURI);
-			filterChain.doFilter(request, response);
-			return;
-		}
+	    if (isExcluded(requestURI)) {
+	        System.out.println("Request to excluded url: " + requestURI);
+	        filterChain.doFilter(request, response);
+	        return;
+	    }
 
-		String token = recoveryToken(request);
-		if (token != null) {
-			try {
-				String subject = jwtTokenService.getSubjectFromToken(token);
+	    String token = recoveryToken(request);
+	    if (token != null) {
+	        try {
+	            String subject = jwtTokenService.getSubjectFromToken(token);
+	            User user = userRepository.findByUsername(subject)
+	                    .orElseThrow(() -> new EntityNotFoundException("No user found with username: " + subject));
 
-				User user = userRepository.findByUsername(subject)
-						.orElseThrow(() -> new EntityNotFoundException("No user found with id: " + subject));
-
-				if (user != null) {
-					Authentication authentication = new UsernamePasswordAuthenticationToken(user.getUsername(), null,
-							user.getAuthorities());
-					SecurityContextHolder.getContext().setAuthentication(authentication);
-					System.out.println("Authentication successful for the user: " + user.getUsername());
-				} else {
-					System.out.println("User not found with token: " + token);
-				}
-			} catch (Exception e) {
-				System.out.println("Error verifying the token: " + e.getMessage());
-			}
-		} else {
-			System.out.println("Token not found in the request header: " + requestURI);
-		}
-		filterChain.doFilter(request, response);
+	            if (user != null) {
+	                Authentication authentication = new UsernamePasswordAuthenticationToken(
+	                        user,
+	                        null,
+	                        user.getAuthorities()
+	                );
+	                SecurityContextHolder.getContext().setAuthentication(authentication);
+	                System.out.println("Authentication successful for the user: " + user.getUsername());
+	            } else {
+	                System.out.println("User not found with token: " + token);
+	            }
+	        } catch (Exception e) {
+	            System.out.println("Error verifying the token: " + e.getMessage());
+	        }
+	    } else {
+	        System.out.println("Token not found in the request header: " + requestURI);
+	    }
+	    filterChain.doFilter(request, response);
 	}
 
 	private boolean isExcluded(String requestURI) {
