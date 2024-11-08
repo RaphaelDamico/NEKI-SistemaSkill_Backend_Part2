@@ -2,8 +2,6 @@ package br.com.neki.sistema_skill_refactored.domain;
 
 import java.util.UUID;
 
-import br.com.neki.sistema_skill_refactored.model.SkillCreateAndAssignModel;
-import br.com.neki.sistema_skill_refactored.model.SkillCreateModel;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -25,27 +23,15 @@ public class Skill {
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
 	@Column(name="skill_cd_id")
-	private UUID id;
+	private UUID skillId;
 
-	@Column(name = "skill_tx_skill_name", unique = true)
+	@Column(name = "skill_tx_skill_name", unique = true, nullable = false)
 	private String skillName;
 
-	@Column(name = "skill_tx_description")
+	@Column(name = "skill_tx_description", length = 150, nullable = false)
 	private String description;
 	
-	@Column(name = "skill_tx_image")
+	@Column(name = "skill_tx_image", length = 300, nullable = false)
     private String image;
-	
-	public Skill(SkillCreateModel skillCreateModel) {
-		this.skillName = skillCreateModel.getSkillName();
-		this.description = skillCreateModel.getDescription();
-		this.image = skillCreateModel.getImage();
-	}
-	
-	public Skill(SkillCreateAndAssignModel skillCreateAndAssignModel) {
-		this.skillName = skillCreateAndAssignModel.getSkillName();
-		this.description = skillCreateAndAssignModel.getDescription();
-		this.image = skillCreateAndAssignModel.getImage();
-	}
 
 }

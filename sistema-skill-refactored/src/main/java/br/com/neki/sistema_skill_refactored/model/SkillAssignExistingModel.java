@@ -9,11 +9,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class SkillAssignExistingModel {
-
-	@NotNull(message = "The user id cannot be null")
+	@NotNull(message = "The user Id must not be null")
 	private UUID userId;
-
 	@NotNull(message = "The skill id cannot be null")
 	private UUID skillId;
-
 }
