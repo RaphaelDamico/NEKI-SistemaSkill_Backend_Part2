@@ -5,6 +5,8 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
 public class ImageUrlValidator implements ConstraintValidator<ValidImageUrl	, String> {
+	
+	private static final int MAX_SIZE = 300;
 
     @Override
     public void initialize(ValidImageUrl constraintAnnotation) {
@@ -15,6 +17,12 @@ public class ImageUrlValidator implements ConstraintValidator<ValidImageUrl	, St
         if (url == null || url.trim().isEmpty()) {
             context.disableDefaultConstraintViolation();
             context.buildConstraintViolationWithTemplate("The URL in the image field is required.")
+                   .addConstraintViolation();
+            return false;
+        }
+        if (url.length() > MAX_SIZE) {
+            context.disableDefaultConstraintViolation();
+            context.buildConstraintViolationWithTemplate("The image URL must be at most " + MAX_SIZE + " characters.")
                    .addConstraintViolation();
             return false;
         }

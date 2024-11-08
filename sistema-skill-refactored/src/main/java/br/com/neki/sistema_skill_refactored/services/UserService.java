@@ -27,6 +27,7 @@ import br.com.neki.sistema_skill_refactored.model.UserDetailsModel;
 import br.com.neki.sistema_skill_refactored.records.JwtTokenRecord;
 import br.com.neki.sistema_skill_refactored.records.LoginCredentialsRecord;
 import br.com.neki.sistema_skill_refactored.repositories.UserRepository;
+import br.com.neki.sistema_skill_refactored.security.service.JwtTokenService;
 
 @Service
 public class UserService implements UserDetailsService {

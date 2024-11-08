@@ -1,4 +1,4 @@
-package br.com.neki.sistema_skill_refactored.core.security;
+package br.com.neki.sistema_skill_refactored.security.config;
 
 import java.util.Arrays;
 
@@ -23,7 +23,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import br.com.neki.sistema_skill_refactored.core.filters.AuthenticationFilter;
+import br.com.neki.sistema_skill_refactored.security.filters.AuthenticationFilter;
 import br.com.neki.sistema_skill_refactored.services.UserService;
 
 @Configuration

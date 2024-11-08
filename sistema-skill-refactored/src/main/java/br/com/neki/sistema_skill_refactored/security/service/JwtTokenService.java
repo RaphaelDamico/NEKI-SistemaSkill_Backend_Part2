@@ -1,4 +1,4 @@
-package br.com.neki.sistema_skill_refactored.services;
+package br.com.neki.sistema_skill_refactored.security.service;
 
 import java.time.Instant;
 import java.time.ZoneId;

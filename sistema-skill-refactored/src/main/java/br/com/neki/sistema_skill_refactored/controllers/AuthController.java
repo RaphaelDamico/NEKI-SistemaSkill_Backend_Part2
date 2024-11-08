@@ -13,6 +13,7 @@ import br.com.neki.sistema_skill_refactored.records.LoginCredentialsRecord;
 import br.com.neki.sistema_skill_refactored.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/auth")
@@ -24,7 +25,7 @@ public class AuthController {
     
     @Operation(summary = "Este método autentica um usuário cadastrado para que ele possa ter acesso restrito retornando o token e o userID.", method = "POST")
     @PostMapping("/signin")
-    public ResponseEntity<JwtTokenRecord> signin(@RequestBody LoginCredentialsRecord loginCredentialsRecord) {
+    public ResponseEntity<JwtTokenRecord> signin(@Valid @RequestBody LoginCredentialsRecord loginCredentialsRecord) {
         JwtTokenRecord jwtToken = userService.authenticateUser(loginCredentialsRecord);
         return ResponseEntity.status(HttpStatus.OK).body(jwtToken);
     }

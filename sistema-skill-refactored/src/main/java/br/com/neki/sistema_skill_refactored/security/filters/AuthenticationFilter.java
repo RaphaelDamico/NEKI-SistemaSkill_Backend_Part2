@@ -1,4 +1,4 @@
-package br.com.neki.sistema_skill_refactored.core.filters;
+package br.com.neki.sistema_skill_refactored.security.filters;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -14,7 +14,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import br.com.neki.sistema_skill_refactored.domain.User;
 import br.com.neki.sistema_skill_refactored.exceptions.EntityNotFoundException;
 import br.com.neki.sistema_skill_refactored.repositories.UserRepository;
-import br.com.neki.sistema_skill_refactored.services.JwtTokenService;
+import br.com.neki.sistema_skill_refactored.security.service.JwtTokenService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

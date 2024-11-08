@@ -25,13 +25,13 @@ public class Skill {
 	@Column(name="skill_cd_id")
 	private UUID skillId;
 
-	@Column(name = "skill_tx_skill_name", unique = true)
+	@Column(name = "skill_tx_skill_name", unique = true, nullable = false)
 	private String skillName;
 
-	@Column(name = "skill_tx_description", length = 300)
+	@Column(name = "skill_tx_description", length = 150, nullable = false)
 	private String description;
 	
-	@Column(name = "skill_tx_image")
+	@Column(name = "skill_tx_image", length = 300, nullable = false)
     private String image;
 
 }

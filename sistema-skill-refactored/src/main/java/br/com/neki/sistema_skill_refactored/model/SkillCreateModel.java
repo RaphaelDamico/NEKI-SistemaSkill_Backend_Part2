@@ -19,7 +19,6 @@ public class SkillCreateModel {
 	private String description;
 	
 	@ValidImageUrl
-	@Size(max = 300, message = "The image url must be at most 300 characters")
 	@Schema(example = "https://example.com/exemple.png")
 	private String image;
 

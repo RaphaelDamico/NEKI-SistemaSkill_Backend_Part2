@@ -12,7 +12,7 @@ import lombok.Setter;
 public class UserDetailsModel {
 	private UUID userId;
 	
-    @NotBlank(message = "The username is required")
+    @NotBlank(message = "The username field is required")
 	private String username;
 	
 	private List<UserSkillModel> userSkills;

@@ -35,15 +35,16 @@ public class User implements UserDetails{
 	@Column(name = "user_cd_id")
 	private UUID userId;
 	
-	@Column(name = "user_tx_username", unique = true)
+	@Column(name = "user_tx_username", unique = true, nullable = false)
 	private String username;
 	
-	@Column(name = "user_tx_password")
+	@Column(name = "user_tx_password", nullable = false)
 	private String password;
 	
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private List<UserSkill> userSkills;
 	
+	@Column(name = "user_int_access_type", nullable = false)
 	private AccessType accessType;
 			
 	@Override
