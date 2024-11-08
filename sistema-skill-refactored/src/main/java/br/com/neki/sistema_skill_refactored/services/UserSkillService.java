@@ -34,9 +34,6 @@ public class UserSkillService {
 	        } else {
 	            userSkills = userSkillRepository.findByUserUserIdAndSkillNameFilter(userId, skillNameFilter, pageable);
 	        }
-	        if (userSkills.isEmpty()) {
-	            throw new UserSkillNotFoundException("No user skills found.");
-	        }
 	        return userSkills.map(userSkillMapper::toUserSkillModel);
 	    }
 	

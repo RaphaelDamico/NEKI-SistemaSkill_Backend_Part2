@@ -35,7 +35,6 @@ public class UserServiceT {
 		UUID userId = UUID.randomUUID();
 		mockMvc.perform(get("/users/{id}", userId).contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isNotFound());
-
 	}
 
 	

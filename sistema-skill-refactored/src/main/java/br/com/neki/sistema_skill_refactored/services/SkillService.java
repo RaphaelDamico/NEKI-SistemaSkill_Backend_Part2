@@ -57,9 +57,6 @@ public class SkillService {
 		} else {
 			skills = skillRepository.findAvailableSkillsForUserWithFilter(userId, skillNameFilter, pageable);
 		}
-		if (skills.isEmpty()) {
-	        throw new SkillNotFoundException("No skills found.");
-	    }
 		return skills.map(skillMapper::toSkillModel);
 	}
 

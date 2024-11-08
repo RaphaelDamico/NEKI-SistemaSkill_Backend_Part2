@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.neki.sistema_skill_refactored.core.validation.ValidationSequence;
 import br.com.neki.sistema_skill_refactored.model.UserCreateModel;
 import br.com.neki.sistema_skill_refactored.model.UserDetailsModel;
 import br.com.neki.sistema_skill_refactored.services.UserService;
@@ -46,7 +48,7 @@ public class UserController {
 	
 	@Operation(summary = "Este método cadastra um usuário com acesso restrito, garantindo que o nome de usuário seja único e retornando o username e o password criptografado.", method = "POST")
 	@PostMapping("/signup")
-	public ResponseEntity<Void> signup(@RequestBody @Valid UserCreateModel userCreateModel) {
+	public ResponseEntity<Void> signup(@RequestBody @Validated(ValidationSequence.class) UserCreateModel userCreateModel) {
 	    userService.createSimpleUser(userCreateModel);
 	    return ResponseEntity.status(HttpStatus.CREATED).build();
 	}

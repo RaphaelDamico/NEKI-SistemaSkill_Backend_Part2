@@ -38,10 +38,11 @@ public class SkillController {
 	@Operation(summary = "Este método captura todas as Skills cadastradas no banco, com opção de filtro por nome da skill e suporte a paginação.", method = "GET")
 	@PreAuthorize("hasAnyRole('ROLE_SIMPLE', 'ROLE_ADMIN')")
 	@GetMapping
-	public Page<SkillModel> getAllSkills(
+	public ResponseEntity<Page<SkillModel>> getAllSkills(
 			@Parameter(name = "skillNameFilter", description = "Filtra as skills pelo nome") @RequestParam(value = "skillNameFilter", required = false) String skillNameFilter,
 			@Parameter(description = "Parâmetros de paginação e ordenação", schema = @Schema(type = "object", example = "{\"page\": 0, \"size\": 5, \"sort\": \"skillName,asc\"}")) Pageable pageable) {
-		return skillService.findAll(skillNameFilter, pageable);
+		Page<SkillModel> skills = skillService.findAll(skillNameFilter, pageable);
+		return skills.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(skills);
 	}
 
 	@Operation(summary = "Este método cadastra uma skill no banco, garantindo que o nome da skill seja único, que possua descrição e que além de possuir url, ele seja válido.", method = "POST")

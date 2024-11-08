@@ -34,16 +34,23 @@ public class UserSkillController {
 	@Autowired
 	UserSkillService userSkillService;
 	
-	 @Operation(summary = "Este método captura todas as UserSkills do usuário autenticado, com opção de filtro por nome da skill e suporte a paginação.", method = "GET")
-	    @PreAuthorize("hasAnyRole('ROLE_SIMPLE', 'ROLE_ADMIN')")
-	    @GetMapping
-	    public Page<UserSkillModel> getAllUserSkills(
-	            @Parameter(name = "skillNameFilter", description = "Filtra as skills pelo nome") @RequestParam(value = "skillNameFilter", required = false) String skillNameFilter,
-	            @Parameter(description = "Parâmetros de paginação e ordenação", schema = @Schema(type = "object", example = "{\"page\": 0, \"size\": 5, \"sort\": \"skill.skillName,asc\"}")) Pageable pageable) {
-	        
-	        return userSkillService.findAll(skillNameFilter, pageable);
-	    }
-
+	 @Operation(
+		        summary = "Este método captura todas as UserSkills do usuário autenticado, com opção de filtro por nome da skill e suporte a paginação.",
+		        method = "GET"
+		    )
+		    @PreAuthorize("hasAnyRole('ROLE_SIMPLE', 'ROLE_ADMIN')")
+		    @GetMapping
+		    public ResponseEntity<Page<UserSkillModel>> getAllUserSkills(
+		            @Parameter(name = "skillNameFilter", description = "Filtra as skills pelo nome") 
+		            @RequestParam(value = "skillNameFilter", required = false) String skillNameFilter,
+		            
+		            @Parameter(description = "Parâmetros de paginação e ordenação", 
+		                       schema = @Schema(type = "object", example = "{\"page\": 0, \"size\": 5, \"sort\": \"skill.skillName,asc\"}")) 
+		            Pageable pageable) {
+		        Page<UserSkillModel> userSkills = userSkillService.findAll(skillNameFilter, pageable);
+		        return userSkills.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(userSkills);      
+		    }
+	 
 	@Operation(summary = "Este método atualiza o level da skill cadastrada na lista de skills do usuário, garantindo que seu level seja no mínimo 1 e no máximo 5 e retornando as informações da skill com o level atualizado.", method = "PUT")
 	@PreAuthorize("hasAnyRole('ROLE_SIMPLE', 'ROLE_ADMIN')")
 	@PutMapping("/level")

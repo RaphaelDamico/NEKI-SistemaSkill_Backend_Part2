@@ -15,10 +15,11 @@ public class SkillCreateModel {
 	private String skillName;
 
 	@NotBlank(message = "The description field is required")
-	@Size(max = 300, message = "The description must be at most 300 characters")
+	@Size(max = 150, message = "The description must be at most 150 characters")
 	private String description;
 	
 	@ValidImageUrl
+	@Size(max = 300, message = "The image url must be at most 300 characters")
 	@Schema(example = "https://example.com/exemple.png")
 	private String image;
 

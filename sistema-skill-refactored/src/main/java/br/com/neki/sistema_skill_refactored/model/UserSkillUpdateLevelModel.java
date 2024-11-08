@@ -12,7 +12,7 @@ import lombok.Setter;
 @Setter
 public class UserSkillUpdateLevelModel {
 	
-	@NotNull
+	@NotNull(message = "The user Id must not be null")
 	private UUID userSkillId;
 	
 	@NotNull
