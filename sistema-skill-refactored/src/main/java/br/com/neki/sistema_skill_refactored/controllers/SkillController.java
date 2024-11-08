@@ -65,7 +65,7 @@ public class SkillController {
 	@PreAuthorize("hasAnyRole('ROLE_SIMPLE', 'ROLE_ADMIN')")
 	@PostMapping("/add-existing")
 	public ResponseEntity<List<UserSkillModel>> addExistingSkillToUser(
-			 @RequestBody @Valid List<SkillAssignExistingModel> listSkillAssignExistingModel) {
+			 @RequestBody @Valid List<@Valid SkillAssignExistingModel> listSkillAssignExistingModel) {
 		return ResponseEntity.status(HttpStatus.OK)
 				.body(skillService.addExistingSkillToUser(listSkillAssignExistingModel));
 	}
